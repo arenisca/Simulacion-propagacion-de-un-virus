@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <math.h>
+#include <limits.h>
 
 typedef struct {
     int zonas;//numero de zonas n
@@ -10,6 +12,13 @@ typedef struct {
     float parametros[2]; // beta y mu entre 0.0 y 1.0 al igual que matriz de transporte
     int modelo[3]; // t entre 0 y t días, zona inicial y final entre 0 y n-1
 } Virus; // esta estructura guardará los datos iniciales
+
+typedef struct {
+    int* S, *I, *R, *D;
+    // susceptibles, infectados, recuperados y fallecidos SIRD
+    int** Delta_I; // infectados por día en cada zona para obtener los de hace 3 días
+} SIRD;
+
 
 int leer_archivo(const char* txt, Virus* virus){
     if (!txt || !virus) {
@@ -120,22 +129,132 @@ void liberar_virus(Virus* virus) {
         }
         free(virus->traslados);
     }
+} 
+void inicio_simulacion(Virus* virus, SIRD* sird) {
+    int n = virus->zonas;
+    int t = virus->modelo[0]+1;
+    
+    // hacemos memoria para S, I, R, D
+    sird->S = (int*)malloc(n * sizeof(int));
+    sird->I = (int*)malloc(n * sizeof(int));
+    sird->R = (int*)malloc(n * sizeof(int));
+    sird->D = (int*)malloc(n * sizeof(int));
+    
+    // Reservar memoria para historia de infectados [zonas][dias+1]
+    sird->Delta_I = (int**)malloc(n * sizeof(int*));
+    for (int i = 0; i < n; i++) {
+        sird->Delta_I[i] = (int*)malloc((t + 1) * sizeof(int));
+    }
+    
+    // Inicializar con datos del archivo (día 0)
+    for (int i = 0; i < n; i++) {
+        sird->S[i] = virus->datos[i][1];  // Susceptibles iniciales
+        sird->I[i] = virus->datos[i][2];  // Infectados iniciales
+        sird->R[i] = 0;  // Inicialmente 0 recuperados
+        sird->D[i] = 0;  // Inicialmente 0 fallecidos
+        
+        // Guardar infectados iniciales en historia (día 0)
+        sird->Delta_I[i][0] = sird->I[i];
+    }
+}
+void liberar_sird(SIRD* sird, int zonas) {
+    if (!sird) return;
+    
+    free(sird->S);
+    free(sird->I);
+    free(sird->R);
+    free(sird->D);
+    
+    if (sird->Delta_I) {
+        for (int i = 0; i < zonas; i++) {
+            free(sird->Delta_I[i]);
+        }
+        free(sird->Delta_I);
+    }
 }
 
-int sucesiones(Virus* virus){
+int sucesiones(Virus* virus, SIRD* sird, int t){
+    int n; // numero de zonas y días t para simulacion
     n=virus->zonas; 
-    t=virus->modelo[0];
-    int S[n], I[n], R[n],D[n]; // S, I, R y D por zona
-    int Delta_I[n][t]; // infectados dia a dia
-    float g[n][n]; // matriz de trnsporte
+    //t=virus->modelo[0];
+    // int** S[n][t], I[n][t], R[n][t],D[n][t]; // S, I, R y D por zona
+    float* Delta_I =(float*)malloc(n*sizeof(float)); // infectados dia a dia de cada zona 
+    
+    //valores constantes, porcentajes
     float beta, mu;
+    float** g; 
     beta=virus->parametros[0]; 
     mu=virus->parametros[1];
+    g=virus->traslados;
+    
+    // datos de destino al lugar que se desea viajar
+    int zona1, zona2;
+    zona1=virus->modelo[1];
+    zona2=virus->modelo[2];
+    
+    // como delta I es n*t haré un for para calcular los valores SIRD zona por zona
+    for (int i=0; i<n; i++){
+        
+        float sumatoria=0.0;
+        //for para la sumatoria de matriz de transporte por el termino anterior de I
+        for(int j=0; j<n; j++){
+            int Ij=sird->I[j];
+            sumatoria = sumatoria + g[i][j]*Ij;
+        }
+        int Sj=sird->S[i];
+        int Ni=virus->datos[i][0];
+        Delta_I[i]=(beta*(float)Sj/(float)Ni)*sumatoria;
+    }
+//** hay un drama acá */
+    // ahora un for para SIRD, importante que hay que dejar en numero entero
+    for(int i=0; i<n; i++){
+        //int Delta_Ii=(int)roundf(Delta_I[i]); 
+        //susceptibles
+        sird->S[i]=sird->S[i] - (int)roundf(Delta_I[i]); 
+        if(sird->S[i]<0) sird->S[i]=0; // para que no haya negativos
+        //** algo pasa aqui, reviar */
+        //infectados
+        int I3 = (t>=3)?sird->Delta_I[i][t-3] : 0;
+        sird->I[i]=sird->I[i] + ((int)roundf(Delta_I[i]))-I3;
+        if(sird->I[i]<0) sird->I[i]=0; // para que no haya negativos
+        
+        //recuperados
+        sird->R[i]=sird->R[i] + (int)roundf((1.0-mu)*I3);
+
+        //fallecidos
+        sird->D[i]=sird->D[i] + (int)roundf(mu*I3);
+
+        sird->Delta_I[i][t]=sird->I[i]; // I del día t en la zona i
+
+    }
+    free(Delta_I);
+    return 0;
 }
 
+void mostrar_resultados(Virus* virus, SIRD* sird, int dia) {
+    printf("Día %d:\n", dia);
+    for (int i = 0; i < virus->zonas; i++) {
+        printf("  Zona %d: S=%d, I=%d, R=%d, D=%d\n", 
+                  i, sird->S[i], sird->I[i], sird->R[i], sird->D[i]);
+    }
+}
+
+// Función para Dijkstra *** por completar ***
+void recorrido_dijkstra(Virus* virus) {
+    // por mientras un mensaje de la función :p
+    int dia = virus->modelo[0];
+    int zona1= virus->modelo[1];
+    int zona2= virus->modelo[2];
+    printf("Recorrido con menor número de contagiados del día %d:\n", dia);
+    printf("Desde zona %d hasta zona %d\n", zona1, zona2);
+    // ...
+    //
+}
+
+
 int main() {
-    Virus virus = {0}; // Inicializamos estructura para datos del archivo
-    char nombre_archivo[256];
+    Virus virus = {0}; 
+    char nombre_archivo[256]; 
     int intentos = 0;
     const int MAX_INTENTOS = 3;
 
@@ -166,9 +285,41 @@ int main() {
         return 1;
     }
 
-    // Aquí continuaría la simulación...
+    // Inicio de la simulación
+    SIRD sird;
+    inicio_simulacion(&virus, &sird);
     
-    // Liberar memoria al final
+    printf("\n=== SIMULACIÓN ===\n");
+    mostrar_resultados(&virus, &sird, 0);
+    
+    // Simular día por día
+    for (int t = 1; t <= virus.modelo[0]; t++) {
+        sucesiones(&virus, &sird, t);
+        mostrar_resultados(&virus, &sird, t);
+    }
+    
+    // Buscar camino mínimo
+    printf("\n=== CAMINO MÍNIMO ===\n");
+    recorrido_dijkstra(&virus);
+    
+    // Preguntar si quiere otro archivo
+    char respuesta;
+    printf("\n¿Desea consultar otro archivo? (s/n): ");
+    scanf(" %c", &respuesta);
+    // Esta parte se la pedí a la IA porque no sabía cómo repetir el main en caso de que quisiera otro archivo
+    // dejarlo explicito para no confundir
+    if (respuesta == 's' || respuesta == 'S') {
+        // Limpiar y repetir
+        liberar_sird(&sird, virus.zonas);
+        liberar_virus(&virus);
+        main(); //trucazo 
+    } else {
+        // Liberar memoria y salir
+        liberar_sird(&sird, virus.zonas);
+        liberar_virus(&virus);
+        printf("Programa finalizado.\n");
+    }
+    // Liberar memoria al final;
     liberar_virus(&virus);
     
     return 0;
