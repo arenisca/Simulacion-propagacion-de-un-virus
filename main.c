@@ -205,24 +205,27 @@ int sucesiones(Virus* virus, SIRD* sird, int t){
         int Ni=virus->datos[i][0];
         Delta_I[i]=(beta*(float)Sj/(float)Ni)*sumatoria;
     }
-//** hay un drama acá */
+
     // ahora un for para SIRD, importante que hay que dejar en numero entero
     for(int i=0; i<n; i++){
-        //int Delta_Ii=(int)roundf(Delta_I[i]); 
+        int Delta_Ii=(int)roundf(Delta_I[i]); 
+        
         //susceptibles
-        sird->S[i]=sird->S[i] - (int)roundf(Delta_I[i]); 
+        sird->S[i]=sird->S[i] - Delta_Ii; 
         if(sird->S[i]<0) sird->S[i]=0; // para que no haya negativos
-        //** algo pasa aqui, reviar */
+        
         //infectados
         int I3 = (t>=3)?sird->Delta_I[i][t-3] : 0;
-        sird->I[i]=sird->I[i] + ((int)roundf(Delta_I[i]))-I3;
+        sird->I[i]=sird->I[i] + Delta_Ii-I3;
         if(sird->I[i]<0) sird->I[i]=0; // para que no haya negativos
         
         //recuperados
-        sird->R[i]=sird->R[i] + (int)roundf((1.0-mu)*I3);
+        int Re=(int)roundf((1.0-mu)*I3);
+        sird->R[i] += Re;
 
         //fallecidos
-        sird->D[i]=sird->D[i] + (int)roundf(mu*I3);
+        int F=(int)roundf(mu*I3);
+        sird->D[i]+= F;
 
         sird->Delta_I[i][t]=sird->I[i]; // I del día t en la zona i
 
@@ -239,16 +242,54 @@ void mostrar_resultados(Virus* virus, SIRD* sird, int dia) {
     }
 }
 
+void resultados(Virus* virus, SIRD* sird) {
+    int t = virus->modelo[0];
+    
+    // Susceptibles por día 
+
+
+    // Infectados por día 
+    for (int i = 0; i < virus->zonas; i++) {
+        printf("I%d = [", i);
+        for (int d = 0; d <= t; d++) {
+            printf("%d", sird->Delta_I[i][d]);
+            if (d < t) printf(", ");
+        }
+        printf("]\n");
+    }
+    
+    // Recuperados por día
+    for (int i = 0; i < virus->zonas; i++) {
+        printf("R%d = [", i);
+        for (int d = 0; d <= t; d++) {
+            printf("%d", sird->R[i]);
+            if (d < t) printf(", ");
+        }
+        printf("]\n");
+    }
+    
+    // Fallecidos por día
+    for (int i = 0; i < virus->zonas; i++) {
+        printf("D%d = [", i);
+        for (int d = 0; d <= t; d++) {
+            printf("%d", sird->D[i]);
+            if (d < t) printf(", ");
+        }
+        printf("]\n");
+    }
+}
+
 // Función para Dijkstra *** por completar ***
 void recorrido_dijkstra(Virus* virus) {
     // por mientras un mensaje de la función :p
     int dia = virus->modelo[0];
     int zona1= virus->modelo[1];
     int zona2= virus->modelo[2];
-    printf("Recorrido con menor número de contagiados del día %d:\n", dia);
-    printf("Desde zona %d hasta zona %d\n", zona1, zona2);
+    //printf("Recorrido con menor número de contagiados del día %d:\n", dia);
+    //printf("Desde zona %d hasta zona %d\n", zona1, zona2);
     // ...
-    //
+    int n=virus->zonas;
+    
 }
 
 
@@ -299,8 +340,8 @@ int main() {
     }
     
     // Buscar camino mínimo
-    printf("\n=== CAMINO MÍNIMO ===\n");
-    recorrido_dijkstra(&virus);
+    //printf("\n=== RECORRIDO CON MENOS INFECTADOS ===\n");
+    //recorrido_dijkstra(&virus);
     
     // Preguntar si quiere otro archivo
     char respuesta;
