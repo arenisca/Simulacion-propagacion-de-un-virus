@@ -77,4 +77,4 @@ gcc propagacion_virus.c virus.c sird.c dijkstra.c -o virus -lm
 - El programa solo recibe archivos .txt con la configuración señalada.
 - Existe una consulta para probar más archivos de texto con datos de simulación.
 - Si se falla más de 3 veces en el archivo, el programa termina.
-
+- Solo considera archivos dentro de la carpeta de trabajo.
