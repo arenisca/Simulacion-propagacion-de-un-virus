@@ -1,17 +1,19 @@
-### Tarea Computacional Matemáticas Discretas
-## Simulacion de la propagación de un virus
+## Tarea Computacional Matemáticas Discretas
+### Departamento de Informática y Cs. de la Computación
+### Facultad de Ingeniería
+### Universidad de Concepción
+
+# Simulacion de la propagación de un virus
 
 **Docente**: Prof. Guillermo Cabrera Vives
+
 **Estudiante**: Valentina Serón Canales @arenisca 
 
-## Departamento de Informática y Cs. de la Computación
-## Facultad de Ingeniería
-## Universidad de Concepción
 
-# Descripción
+## Descripción
 Esta tarea desarrolla el modelo de propagación de un virus en distintas zonas con numero de población N, la cual contiene personas Susceptibles, Infectadas, Recuperadas y Fallecidas. Este trabajo entrega los elementos señalados por día y utiliza el algoritmo de Dijkstra para encontrar un recorrido de una zona i a otra j con la menor cantidad de infectados que se podría topar una persona. 
 
-# Estructura
+## Estructura
 - Simulacion-propagacion-de-un-virus/
 │
 ├── borrador # Carpeta con archivo .c borrador de la tarea
@@ -26,7 +28,7 @@ Esta tarea desarrolla el modelo de propagación de un virus en distintas zonas c
 ├── virus_ejemplo.txt # Archivo de ejemplo para pruebas
 └── virus_ejemplo2.txt # Archivo de ejemplo 2 para pruebas
 
-# Compilación y ejecución
+## Compilación y ejecución
 - Compilador GCC
 - Sistema Linux/Unix
 - Biblioteca matemática estándar
@@ -35,7 +37,7 @@ Esta tarea desarrolla el modelo de propagación de un virus en distintas zonas c
 gcc propagacion_virus.c virus.c sird.c dijkstra.c -o virus -lm
 .\virus 
 ``` 
-# Formato del archivo .txt de entrada
+## Formato del archivo .txt de entrada
 - virus_ejemplo.txt:
 3                       ← Número de zonas
 100000 100000 0         ← Zona 0: Población, Susceptibles, Infectados
@@ -47,7 +49,7 @@ gcc propagacion_virus.c virus.c sird.c dijkstra.c -o virus -lm
 0.4 0.1                 ← Parámetros: β (tasa contagio), μ (tasa mortalidad)
 4 0 1                   ← Día final de simulación, zona inicio, zona destino
 
-# Consideraciones del programa
+## Consideraciones del programa
 - Existe una consulta para probar más archivos de texto con datos de simulación.
 - si se falla más de 3 veces en el archivo, el programa termina.
 
