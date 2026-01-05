@@ -1,15 +1,13 @@
-### Departamento de Informática y Cs. de la Computación
-### Facultad de Ingeniería
-### Universidad de Concepción
+**Departamento de Informática y Cs. de la Computación** 
+**Facultad de Ingeniería** 
+**Universidad de Concepción** 
 
+### Tarea Computacional Matemáticas Discretas 
 ## Simulacion de la propagación de un virus 
 
-**Tarea Computacional Matemáticas Discretas**
-
-**Docente**: Prof. Guillermo Cabrera Vives
+**Docente**: Prof. Guillermo Cabrera Vives 
 
 **Estudiante**: Valentina Serón Canales @arenisca 
-
 
 ## Descripción
 Esta tarea desarrolla el modelo de propagación de un virus en distintas zonas con numero de población N, la cual contiene personas Susceptibles, Infectadas, Recuperadas y Fallecidas. Este trabajo entrega los elementos señalados por día y utiliza el algoritmo de Dijkstra para encontrar un recorrido de una zona i a otra j con la menor cantidad de infectados que se podría topar una persona. 
