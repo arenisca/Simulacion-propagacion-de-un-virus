@@ -16,6 +16,7 @@ Esta tarea desarrolla el modelo de propagación de un virus en distintas zonas c
 
 ## Estructura
 - Simulacion-propagacion-de-un-virus/ 
+```bash
 │ 
 ├── borrador # Carpeta con archivo .c borrador de la tarea 
 ├── README.md # archivo markdown 
@@ -27,7 +28,7 @@ Esta tarea desarrolla el modelo de propagación de un virus en distintas zonas c
 ├── virus.c # Manejo de datos y parámetros del modelo 
 ├── virus.h # Cabeceras para virus.c 
 └── virus_ejemplo2.txt # Archivo de ejemplo 2 para pruebas 
- 
+ ```
 ## Compilación y ejecución
 - Compilador GCC
 - Sistema Linux/Unix
