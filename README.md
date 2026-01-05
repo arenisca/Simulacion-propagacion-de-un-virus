@@ -1,14 +1,14 @@
+# Simulacion de la propagación de un virus
+
+**Estudiante**: Valentina Serón Canales 
+
+**Asignatura**: Matemáticas Discretas
+
 **Departamento de Informática y Cs. de la Computación** 
 
 **Facultad de Ingeniería** 
 
-**Universidad de Concepción** 
-
-### Tarea Computacional Matemáticas Discretas: Simulacion de la propagación de un virus 
-
-**Docente**: Prof. Guillermo Cabrera Vives 
-
-**Estudiante**: Valentina Serón Canales @arenisca 
+**Universidad de Concepción**
 
 ## Descripción
 Esta tarea desarrolla el modelo de propagación de un virus en distintas zonas con numero de población, la cual contiene personas Susceptibles, Infectadas, Recuperadas y Fallecidas. 
