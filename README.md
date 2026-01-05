@@ -15,30 +15,19 @@
 Esta tarea desarrolla el modelo de propagación de un virus en distintas zonas con numero de población N, la cual contiene personas Susceptibles, Infectadas, Recuperadas y Fallecidas. Este trabajo entrega los elementos señalados por día y utiliza el algoritmo de Dijkstra para encontrar un recorrido de una zona i a otra j con la menor cantidad de infectados que se podría topar una persona. 
 
 ## Estructura
-- Simulacion-propagacion-de-un-virus/
-
-│
-
-├── borrador # Carpeta con archivo .c borrador de la tarea
-
-├── README.md # archivo markdown
-
-├── dijkstra.c # Algoritmo de Dijkstra 
-
-├── dijkstra.h # Cabeceras para dijkstra.c
-
-├── propagacion_virus.c # Programa principal (interfaz de usuario)
-
-├── sird.c # Implementación del modelo epidemiológico
-
-├── sird.h # Cabeceras para sird.c
-
-├── virus.c # Manejo de datos y parámetros del modelo
-
-├── virus.h # Cabeceras para virus.c
-
-└── virus_ejemplo2.txt # Archivo de ejemplo 2 para pruebas
-
+- Simulacion-propagacion-de-un-virus/ 
+│ 
+├── borrador # Carpeta con archivo .c borrador de la tarea 
+├── README.md # archivo markdown 
+├── dijkstra.c # Algoritmo de Dijkstra  
+├── dijkstra.h # Cabeceras para dijkstra.c 
+├── propagacion_virus.c # Programa principal (interfaz de usuario) 
+├── sird.c # Implementación del modelo epidemiológico 
+├── sird.h # Cabeceras para sird.c 
+├── virus.c # Manejo de datos y parámetros del modelo 
+├── virus.h # Cabeceras para virus.c 
+└── virus_ejemplo2.txt # Archivo de ejemplo 2 para pruebas 
+ 
 ## Compilación y ejecución
 - Compilador GCC
 - Sistema Linux/Unix
