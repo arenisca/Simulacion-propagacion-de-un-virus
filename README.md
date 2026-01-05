@@ -1,9 +1,10 @@
-## Tarea Computacional Matemáticas Discretas
 ### Departamento de Informática y Cs. de la Computación
 ### Facultad de Ingeniería
 ### Universidad de Concepción
 
-# Simulacion de la propagación de un virus
+## Simulacion de la propagación de un virus 
+
+**Tarea Computacional Matemáticas Discretas**
 
 **Docente**: Prof. Guillermo Cabrera Vives
 
@@ -15,17 +16,27 @@ Esta tarea desarrolla el modelo de propagación de un virus en distintas zonas c
 
 ## Estructura
 - Simulacion-propagacion-de-un-virus/
+
 │
+
 ├── borrador # Carpeta con archivo .c borrador de la tarea
+
 ├── README.md # archivo markdown
+
 ├── dijkstra.c # Algoritmo de Dijkstra 
+
 ├── dijkstra.h # Cabeceras para dijkstra.c
+
 ├── propagacion_virus.c # Programa principal (interfaz de usuario)
+
 ├── sird.c # Implementación del modelo epidemiológico
+
 ├── sird.h # Cabeceras para sird.c
+
 ├── virus.c # Manejo de datos y parámetros del modelo
+
 ├── virus.h # Cabeceras para virus.c
-├── virus_ejemplo.txt # Archivo de ejemplo para pruebas
+
 └── virus_ejemplo2.txt # Archivo de ejemplo 2 para pruebas
 
 ## Compilación y ejecución
