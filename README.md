@@ -14,9 +14,9 @@
 ## Descripción
 Esta tarea desarrolla el modelo de propagación de un virus en distintas zonas con numero de población N, la cual contiene personas Susceptibles, Infectadas, Recuperadas y Fallecidas. Este trabajo entrega los elementos señalados por día y utiliza el algoritmo de Dijkstra para encontrar un recorrido de una zona i a otra j con la menor cantidad de infectados que se podría topar una persona. 
 
-## Estructura
-- Simulacion-propagacion-de-un-virus/ 
+## Estructura 
 ```bash
+Simulacion-propagacion-de-un-virus/
 │ 
 ├── borrador # Carpeta con archivo .c borrador de la tarea 
 ├── README.md # archivo markdown 
@@ -39,7 +39,8 @@ gcc propagacion_virus.c virus.c sird.c dijkstra.c -o virus -lm
 .\virus 
 ``` 
 ## Formato del archivo .txt de entrada
-- virus_ejemplo.txt:
+```bash
+virus_ejemplo.txt:
 3                       ← Número de zonas
 100000 100000 0         ← Zona 0: Población, Susceptibles, Infectados
 200000 200000 0         ← Zona 1: Población, Susceptibles, Infectados
@@ -49,7 +50,7 @@ gcc propagacion_virus.c virus.c sird.c dijkstra.c -o virus -lm
 0.0 0.3 0.7             ← Matriz transporte: fila 2 (g₂₀, g₂₁, g₂₂)
 0.4 0.1                 ← Parámetros: β (tasa contagio), μ (tasa mortalidad)
 4 0 1                   ← Día final de simulación, zona inicio, zona destino
-
+```
 ## Consideraciones del programa
 - Existe una consulta para probar más archivos de texto con datos de simulación.
 - si se falla más de 3 veces en el archivo, el programa termina.
